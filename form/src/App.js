@@ -1,79 +1,116 @@
-import { useState } from "react";
-import FormInput from "./FormInput";
-
-const App = () => {
-  const [values, setValues] = useState({
-    username: "",
+import React, { useState } from "react";
+import Data from "./Data";
+function App() {
+  const [name, setName] = useState({
+    fname: "",
+    lname: "",
     email: "",
-    birthday: "",
+    contact: "",
     password: "",
+    cpassword: "",
   });
-
-  const inputs = [
-    {
-      id: 1,
-      name: "username",
-      type: "text",
-      placeholder: "Username",
-      errorMessage:
-        "Username should be 3-16 characters and shouldn't include any special character!",
-      label: "Username",
-      pattern: "^[A-Za-z0-9]{3,16}$",
-      required: true,
-    },
-    {
-      id: 2,
-      name: "email",
-      type: "email",
-      placeholder: "Email",
-      errorMessage: "It should be a valid email address!",
-      label: "Email",
-      required: true,
-    },
-    {
-      id: 3,
-      name: "birthday",
-      type: "date",
-      placeholder: "Birthday",
-      label: "Birthday",
-    },
-    {
-      id: 4,
-      name: "password",
-      type: "password",
-      placeholder: "Password",
-      errorMessage:
-        "Password should be 8-20 characters and include at least 1 letter, 1 number and 1 special character!",
-      label: "Password",
-      pattern: `^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$`,
-      required: true,
-    },
-  ];
-
-  const handleSubmit = (e) => {
+  const [allData, setAllData] = useState([]);
+  const change = (e) => {
+    const val = e.target.value;
+    const Name = e.target.name;
+    setName((prev) => {
+      return {
+        ...prev,
+        [Name]: val,
+      };
+    });
+  };
+  const submit = (e) => {
     e.preventDefault();
+    console.log(name);
+    var userData = [
+      {
+        firstName: name.fname,
+        lastName: name.lname,
+        email: name.email,
+        contact: name.contact,
+        password: name.password,
+        cpassword: name.cpassword,
+      },
+    ];
+    setAllData([...allData, userData]);
+    setName({
+      fname: "",
+      lname: "",
+      contact: "",
+      email: "",
+      password: "",
+      cpassword: "",
+    });
   };
-
-  const onChange = (e) => {
-    setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
   return (
-    <div className="app">
-      <form onSubmit={handleSubmit}>
-        <h1>Register</h1>
-        {inputs.map((input) => (
-          <FormInput
-            key={input.id}
-            {...input}
-            value={values[input.name]}
-            onChange={onChange}
+    <>
+      <div>
+        <form onSubmit={submit}>
+          <h1>Register</h1>
+          First Name :-
+          <input
+            type="text"
+            name="fname"
+            value={name.fname}
+            onChange={change}
           />
-        ))}
-        <button>Submit</button>
-      </form>
-    </div>
+          <br />
+          <br />
+          Last Name :-
+          <input
+            type="text"
+            name="lname"
+            value={name.lname}
+            onChange={change}
+          />
+          <br />
+          <br />
+          Contact :-
+          <input
+            type="number"
+            name="contact"
+            value={name.contact}
+            onChange={change}
+          />
+          <br />
+          <br />
+          Email :-
+          <input
+            type="email"
+            name="email"
+            value={name.email}
+            onChange={change}
+          />
+          <br />
+          <br />
+          Password :-
+          <input
+            type="password"
+            name="password"
+            value={name.password}
+            onChange={change}
+            autoComplete="off"
+          />
+          <br />
+          <br />
+          Confirm Password :-
+          <input
+            type="password"
+            name="cpassword"
+            value={name.cpassword}
+            onChange={change}
+            autoComplete="off"
+          />
+          <br />
+          <br />
+          <button>Submit</button>
+          <br />
+          <br />
+        </form>
+        <Data allData={allData} />
+      </div>
+    </>
   );
-};
-
+}
 export default App;
